@@ -7,12 +7,10 @@ use Illuminate\Support\Collection;
 class IntervalController extends Controller
 {
     private $adminData;
-    private $userData;
     private $baseUrl = 'https://api.myintervals.com';
 
     public function __construct(){
-        $this->adminData = array("key" => env('INTERVALS_ACCESS_TOKEN'), "password" => env('INTERVALS_PASSWORD'));
-        $this->userData = array("key" => env('INTERVALS_ACCESS_TOKEN'), "password" => env('INTERVALS_PASSWORD')); //Change to auth user data
+        $this->adminData = array("interval_token" => env('INTERVALS_ACCESS_TOKEN'), "password" => env('INTERVALS_PASSWORD'));
     }
 
     /**
@@ -22,7 +20,7 @@ class IntervalController extends Controller
      */
     private function requestInterval($urlRequest, $userData)
     {
-        $credentials = $userData['key'].':'.$userData['password'];
+        $credentials = $userData['interval_token'].':'.$userData['password'];
         $url = $this->baseUrl.$urlRequest;
 
         $headers = array(
@@ -89,11 +87,13 @@ class IntervalController extends Controller
     /**
      * @return mixed
      */
-    public function getMe()
+    public function getMe($user)
     {
         $urlRequest='/me/';
+        $userData['interval_token'] = $user['interval_token'];
+        $userData['password'] = $user['password'];
 
-        $response = $this->requestInterval($urlRequest, $this->userData);
+        $response = $this->requestInterval($urlRequest, $userData);
 
         $me = collect($response->me);
 
@@ -105,7 +105,6 @@ class IntervalController extends Controller
                 'interval_username' => $item->username,
                 'interval_lastname' =>$item->lastname,
                 'interval_groupid' =>$item->groupid,
-                'interval_active' =>$item->active,
                 'interval_group' =>$item->group
             ];
 
@@ -136,7 +135,7 @@ class IntervalController extends Controller
                 'interval_username' => $item->username,
                 'interval_lastname' =>$item->lastname,
                 'interval_groupid' =>$item->groupid,
-                'interval_active' =>$item->active,
+                'interval_active' =>$item->active == "t",
                 'interval_group' =>$item->group
             ];
 
@@ -203,6 +202,7 @@ class IntervalController extends Controller
         $response = $this->requestInterval($urlRequest, $this->adminData);
 
         $projectmodules = collect($response->projectmodule);
+
         $projectmodules->transform(function($item, $key){
             $item->active = $item->active == "t";
             $item = collect($item);

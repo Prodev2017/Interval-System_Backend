@@ -72,6 +72,10 @@
     .center{
         text-align: center;
     }
+    .bloc{
+        width: 200px;
+        display: inline-block;
+    }
 </style>
 <div class="container">
     <div class="head_bloc">
@@ -95,8 +99,8 @@
         @foreach($items['data'] as $item)
             <div class="user_data">
                 <div class="user_name">
-                       <b>{{ucwords($item['username'])}}</b>
-                    <a><button class="position">Approve</button></a>
+                       <b class="bloc">{{ucwords($item['username'])}}</b>
+                    <a><button>Approve</button></a>
                 </div>
                 <table>
                     <tr class="head">

@@ -17,6 +17,23 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//real
+Route::get('/approve/{adminid}/{userid}/{weekid}', 'ReportController@approve');
+Route::get('/approveall/{adminid}/{weekid}', 'ReportController@approveAll');
+Route::get('/download/{adminid}/{startdate}/{enddate}', 'ReportController@pdfview');
+Route::get('/updateuser', 'UserController@updateUsers');
+
+
+
+
+//testing
+
+
+Route::get('/mail', 'ManagerController@mailing');
+
+Route::get('/login', 'UserController@login');
+Route::get('pdfview',array('as'=>'pdfview','uses'=>'ReportController@pdfview'));
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/me', 'IntervalController@getMe');
