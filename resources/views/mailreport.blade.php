@@ -84,7 +84,7 @@
         </h1>
         <div>
             <h2><b>Attached are summaries of your timesheets</b></h2>
-            <a href="{{ route('pdfview',['download'=>'pdf']) }}" class="position"><button>Download PDF</button></a>
+            <a href="{{ route('pdfview',['week_id'=>$items->week_id, 'manager_id' => $items->interval_id]) }}" class="position"><button>Download PDF</button></a>
         </div>
         <div>
             Please review the submitted timesheets
@@ -96,11 +96,13 @@
         <h2>TimeSheets:</h2>
     </div>
 
-        @foreach($items['data'] as $item)
+        @foreach($items->timereport as $item)
             <div class="user_data">
                 <div class="user_name">
                        <b class="bloc">{{ucwords($item['username'])}}</b>
-                    <a><button>Approve</button></a>
+                    <a href="{{ route('approve',['approvals_id'=>$item['approval_id'], 'manager_id' => $items->interval_id]) }}">
+                        <button>Approve</button>
+                    </a>
                 </div>
                 <table>
                     <tr class="head">
@@ -159,6 +161,6 @@
             </div>
         @endforeach
     <div class="approve_all">
-        <a><button>Approve All</button></a>
+        <a href="{{ route('approveall',['week_id'=>$items->week_id, 'manager_id' => $items->interval_id]) }}"><button>Approve All</button></a>
     </div>
 </div>

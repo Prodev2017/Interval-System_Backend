@@ -26,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->boolean('interval_active');
             $table->timestamps();
         });
+
+        dispatch(new \App\Jobs\UpdateUsers());
     }
 
     /**

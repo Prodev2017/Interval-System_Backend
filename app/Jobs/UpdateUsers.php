@@ -33,22 +33,50 @@ class UpdateUsers implements ShouldQueue
      */
     public function handle()
     {
-        //
         $iterval = new IntervalController();
-        $new_users = $iterval->getPersone();
+        $get_users = $iterval->getPersone();
 
-        foreach ($new_users as $new_user){
-            $user = User::updateOrCreate(
-                ['interval_id' => $new_user['interval_id']],
-                ['interval_localid'=>   $new_user['interval_localid'],
-                    'username'=>        $new_user['interval_username'],
-                    'email'=>           $iterval->getPersoneEmail($new_user['interval_id']),
-                    'firstname'=>       $new_user['interval_firstname'],
-                    'lastname'=>        $new_user['interval_lastname'],
-                    'interval_groupid'=>$new_user['interval_groupid'],
-                    'interval_group'=>  $new_user['interval_group'],
-                    'interval_active'=> $new_user['interval_active']
-                ]);
+        if(!isset($get_users->code)){
+            $user = new User();
+            $all_users = User::all();
+
+            $new_users = [];
+            foreach ($get_users as $get_user)
+            {
+                $user_old = $all_users->where('interval_id', $get_user['interval_id']);
+
+                if($user_old->count()>0)
+                {
+                    $user_old = $user_old->first();
+
+                    if($user_old->interval_active != $get_user['interval_active']
+                        || $user_old->interval_groupid != $get_user['interval_groupid'])
+                    {
+                        User::where('interval_id', $get_user['interval_id'])
+                            ->update(['interval_active' => $get_user['interval_active'],
+                                'email' => $iterval->getPersoneEmail($get_user['interval_id']),
+                                'interval_groupid' => $get_user['interval_groupid'],
+                                'interval_group' => $get_user['interval_group']]);
+                    }
+                }elseif($get_user['interval_active'])
+                {
+                    $new_users[]=['interval_id' => $get_user['interval_id'],
+                        'interval_localid' => $get_user['interval_localid'],
+                        'username' => $get_user['interval_username'],
+                        'email' => $iterval->getPersoneEmail($get_user['interval_id']),
+                        'firstname' => $get_user['interval_firstname'],
+                        'lastname' => $get_user['interval_lastname'],
+                        'interval_groupid' => $get_user['interval_groupid'],
+                        'interval_group' => $get_user['interval_group'],
+                        'interval_active' => $get_user['interval_active']
+                    ];
+                }
+            }
+
+            if(isset($new_users)){
+                $user->insert($new_users);
+            }
         }
+
     }
 }

@@ -2,26 +2,24 @@
 
 namespace App\Mail;
 
-use App\Http\Controllers\ReportController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendReports extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $admin_id;
+    private $manager;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($manager)
     {
-        //
-//        $this->admin_id=$admin_id;
+
+        $this->manager=$manager;
     }
 
     /**
@@ -31,13 +29,9 @@ class SendReports extends Mailable
      */
     public function build()
     {
-        $data = new ReportController();
-        $data = $data->timeData();
-
-
-        return $this->from('example@example.com')
-                    ->to('aaaa@aaaa.aa')
-                    ->with(['items'=>$data])
+        return $this->from(env('MAIL_ADDRESS'))
+                    ->to($this->manager->email)
+                    ->with(['items'=>$this->manager])
                     ->view('mailreport');
     }
 }

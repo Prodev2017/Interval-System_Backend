@@ -15,7 +15,7 @@ class CreateApprovalsTable extends Migration
     {
         Schema::create('approvals', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('admin_id');
+            $table->bigInteger('manager_id');
             $table->bigInteger('user_id');
             $table->integer('week_id');
             $table->boolean('status');

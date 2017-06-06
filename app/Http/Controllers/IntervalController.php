@@ -68,6 +68,9 @@ class IntervalController extends Controller
 
         $response = $this->requestInterval($urlRequest, $this->adminData);
 
+        if($response->code > 230){
+            return collect($response);
+        }
         $clients = collect($response->client);
 
         $clients = $clients->map(function ($item, $key){
@@ -84,10 +87,7 @@ class IntervalController extends Controller
         return isset($localId)?$clients->first():$clients;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMe($user)
+    /*public function getMe($user)
     {
         $urlRequest='/me/';
         $userData['interval_token'] = $user['interval_token'];
@@ -112,7 +112,7 @@ class IntervalController extends Controller
         });
 
         return $me->first();
-    }
+    }*/
 
     /**
      * @param null $localId
@@ -124,6 +124,10 @@ class IntervalController extends Controller
         $urlRequest='/person/?'.$request;
 
         $response = $this->requestInterval($urlRequest, $this->adminData);
+
+        if($response->code > 230){
+            return collect($response);
+        }
 
         $persons = collect($response->person);
 
@@ -155,14 +159,13 @@ class IntervalController extends Controller
 
         $response = $this->requestInterval($urlRequest, $this->adminData);
 
-        return $response->personcontact['0']->value;
+        if($response->code > 230){
+            return '';
+        }
+        return isset($response->personcontact['0']->value)?$response->personcontact['0']->value:'';
     }
 
-    /**
-     * @param null $localId
-     * @return mixed|static
-     */
-    public function getProject($localId = null)
+  /*  public function getProject($localId = null)
     {
         $request = $this->getDataRequest($localId);
         $urlRequest='/project/?'.$request;
@@ -170,7 +173,7 @@ class IntervalController extends Controller
         $response = $this->requestInterval($urlRequest, $this->adminData);
 
         $projects = collect($response->project);
-
+dd($projects);
         $projects = $projects->map(function ($item, $key){
             $project = [
                 'interval_id' => $item->id,
@@ -190,11 +193,6 @@ class IntervalController extends Controller
         return isset($localId)?$projects->first():$projects;
     }
 
-    /**
-     * @param $projectId
-     * @param null $personId
-     * @return Collection|static
-     */
     public function getProjectModule($projectId, $personId=null)
     {
         $urlRequest='/projectmodule/?limit=1000&projectid='.$projectId.(isset($personId)?'&personid='.$personId:'');
@@ -211,13 +209,9 @@ class IntervalController extends Controller
         });
 
         return $projectmodules;
-    }
+    }*/
 
-    /**
-     * @param null $localId
-     * @return mixed|static
-     */
-    public function getTask($localId=null)
+    /*public function getTask($localId=null)
     {
         $request = $this->getDataRequest($localId);
         $urlRequest='/task/?'.$request;
@@ -233,7 +227,7 @@ class IntervalController extends Controller
         });
 
         return isset($localId)?$tasks->first():$tasks;
-    }
+    }*/
 
     /**
      * @param $dateBegin
@@ -242,9 +236,13 @@ class IntervalController extends Controller
      */
     public function getTime($dateBegin, $dateEnd)
     {
-        $urlRequest='/time/?limit=10000&datebegin='.$dateBegin.'&dateend='.$dateEnd;
+        $urlRequest='/time/?limit=10000&billable=1&datebegin='.$dateBegin.'&dateend='.$dateEnd;
 
         $response = $this->requestInterval($urlRequest, $this->adminData);
+
+        if($response->code > 230){
+            return collect($response);
+        }
 
         $times = collect($response->time);
 
@@ -260,10 +258,7 @@ class IntervalController extends Controller
         return $times;
     }
 
-    /**
-     * @return Collection|static
-     */
-    public function getWorkType()
+    /*public function getWorkType()
     {
         $request = $this->getDataRequest();
         $urlRequest='/worktype/?'.$request;
@@ -280,5 +275,5 @@ class IntervalController extends Controller
         });
 
         return $worktyps;
-    }
+    }*/
 }

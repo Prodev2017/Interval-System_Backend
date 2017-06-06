@@ -26,13 +26,38 @@
     .total td{
         padding-top: 7px;
     }
+    button{
+        background-color: #2e3436;
+        color: #fff;
+        border: 1px solid #2e3436;
+        border-radius: 5px;
+        height: 20px;
+        line-height: 18px;
+        font-size: 15px;
+        padding: 0 5px;
+    }
+    button:hover{
+        background-color: #636b6f;
+        border-color: #636b6f;
+    }
+    .user_approve{
+        border-radius: 3px;
+        height: 15px;
+        line-height: 13px;
+        font-size: 12px;
+    }
+    a{
+        text-decoration: none;
+    }
+    .approve_all{
+        margin-top: 20px;
+    }
 </style>
 <div class="container">
 
     <div><b>Summary Report</b></div>  <br/>
     <div>Viewing by person; From {{$items['from']}} through {{$items['through']}}</div>
     <br/>
-    <a href="{{ route('pdfview',['download'=>'pdf']) }}">Download PDF</a>
 
     <table>
         <tr class="head">
@@ -49,8 +74,11 @@
         <?php $total=0;?>
         @foreach($items['data'] as $item)
             <tr>
-                <td colspan= '9' class="name_head">
+                <td colspan= '7' class="name_head">
                     {{ucwords($item['username'])}}
+                </td>
+                <td colspan= '2' class="name_head">
+                    <a href="{{ route('approve',['approvals_id'=>$item['approval_id'], 'manager_id' => $items['interval_id']]) }}"><button class="user_approve">Approve</button></a>
                 </td>
             </tr>
             <?php $total_user =0;?>
@@ -106,4 +134,7 @@
                     </tr>
         </tbody>
     </table>
+    <div class="approve_all">
+        <a href="{{ route('approveall',['week_id'=>$items['week_id'], 'manager_id' => $items['interval_id']]) }}"><button>Approve All</button></a>
+    </div>
 </div>

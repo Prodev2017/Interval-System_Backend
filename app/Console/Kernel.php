@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\SendReportsJob;
+use App\Jobs\UpdateUsers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->call(function(){dispatch(new SendReportsJob());})->weekly()->fridays()->between('17:00','18:00');
+        $schedule->call(function(){dispatch(new UpdateUsers());})->weekly()->fridays();
     }
 
     /**

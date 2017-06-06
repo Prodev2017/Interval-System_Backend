@@ -16,7 +16,7 @@ class CreateSelectedsTable extends Migration
         Schema::create('selecteds', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('admin_id');
+            $table->integer('manager_id');
             $table->timestamps();
         });
     }
