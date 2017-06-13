@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SendReportsJob;
 use App\Selected;
 use App\User;
 use Dompdf\Exception;
@@ -196,9 +195,5 @@ class ManagerController extends Controller
         } catch (Exception $e){
             abort(400);
         }
-    }
-
-    public function mailing(){
-        dispatch(new SendReportsJob());
     }
 }

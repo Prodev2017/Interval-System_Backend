@@ -26,8 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function(){dispatch(new SendReportsJob());})->weekly()->fridays()->between('17:00','18:00');
-        $schedule->call(function(){dispatch(new UpdateUsers());})->weekly()->fridays();
+
     }
 
     /**

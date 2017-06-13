@@ -73,7 +73,7 @@ class IntervalController extends Controller
         }
         $clients = collect($response->client);
 
-        $clients = $clients->map(function ($item, $key){
+        $clients = $clients->map(function ($item){
             $client = [
                 'interval_id' => $item->id,
                 'interval_name' => $item->name,
@@ -87,32 +87,6 @@ class IntervalController extends Controller
         return isset($localId)?$clients->first():$clients;
     }
 
-    /*public function getMe($user)
-    {
-        $urlRequest='/me/';
-        $userData['interval_token'] = $user['interval_token'];
-        $userData['password'] = $user['password'];
-
-        $response = $this->requestInterval($urlRequest, $userData);
-
-        $me = collect($response->me);
-
-        $me = $me->map(function ($item, $key){
-            $me_local = [
-                'interval_id' => $item->id,
-                'interval_localid' => $item->localid,
-                'interval_firstname' => $item->firstname,
-                'interval_username' => $item->username,
-                'interval_lastname' =>$item->lastname,
-                'interval_groupid' =>$item->groupid,
-                'interval_group' =>$item->group
-            ];
-
-            return $me_local;
-        });
-
-        return $me->first();
-    }*/
 
     /**
      * @param null $localId
@@ -131,7 +105,7 @@ class IntervalController extends Controller
 
         $persons = collect($response->person);
 
-        $persons = $persons->map(function ($item, $key){
+        $persons = $persons->map(function ($item){
             $person = [
                 'interval_id' => $item->id,
                 'interval_localid' => $item->localid,
@@ -165,70 +139,6 @@ class IntervalController extends Controller
         return isset($response->personcontact['0']->value)?$response->personcontact['0']->value:'';
     }
 
-  /*  public function getProject($localId = null)
-    {
-        $request = $this->getDataRequest($localId);
-        $urlRequest='/project/?'.$request;
-
-        $response = $this->requestInterval($urlRequest, $this->adminData);
-
-        $projects = collect($response->project);
-dd($projects);
-        $projects = $projects->map(function ($item, $key){
-            $project = [
-                'interval_id' => $item->id,
-                'interval_name' => $item->name,
-                'interval_alert_percent' => $item->alert_percent,
-                'interval_active' => $item->active == "t",
-                'interval_client' =>$item->client,
-                'interval_clientid' =>$item->clientid,
-                'interval_localid' =>$item->localid,
-                'interval_manager' =>$item->manager,
-                'interval_managerid' =>$item->managerid
-            ];
-
-            return $project;
-        });
-
-        return isset($localId)?$projects->first():$projects;
-    }
-
-    public function getProjectModule($projectId, $personId=null)
-    {
-        $urlRequest='/projectmodule/?limit=1000&projectid='.$projectId.(isset($personId)?'&personid='.$personId:'');
-
-        $response = $this->requestInterval($urlRequest, $this->adminData);
-
-        $projectmodules = collect($response->projectmodule);
-
-        $projectmodules->transform(function($item, $key){
-            $item->active = $item->active == "t";
-            $item = collect($item);
-
-            return $item->toarray();
-        });
-
-        return $projectmodules;
-    }*/
-
-    /*public function getTask($localId=null)
-    {
-        $request = $this->getDataRequest($localId);
-        $urlRequest='/task/?'.$request;
-
-        $response = $this->requestInterval($urlRequest, $this->adminData);
-
-        $tasks = collect($response->task);
-
-        $tasks = $tasks->map(function ($item, $key){
-            $task = collect($item);
-
-            return $task->toArray();
-        });
-
-        return isset($localId)?$tasks->first():$tasks;
-    }*/
-
     /**
      * @param $dateBegin
      * @param $dateEnd
@@ -246,7 +156,7 @@ dd($projects);
 
         $times = collect($response->time);
 
-        $times->transform(function($item, $key){
+        $times->transform(function($item){
             $item->active = $item->active == "t";
             $item->billable = $item->billable == "t";
             $item->clientactive = $item->clientactive == "t";
@@ -258,22 +168,4 @@ dd($projects);
         return $times;
     }
 
-    /*public function getWorkType()
-    {
-        $request = $this->getDataRequest();
-        $urlRequest='/worktype/?'.$request;
-
-        $response = $this->requestInterval($urlRequest, $this->adminData);
-
-        $worktyps = collect($response->worktype);
-
-        $worktyps->transform(function($item, $key){
-            $item->active = $item->active == "t";
-            $item = collect($item);
-
-            return $item->toarray();
-        });
-
-        return $worktyps;
-    }*/
 }
