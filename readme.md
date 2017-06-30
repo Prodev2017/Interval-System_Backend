@@ -7,6 +7,12 @@
 - Tokenizer PHP Extension
 - XML PHP Extension
 - MySQL
+
+## API DOC
+The located documentation for IPA:
+```angular2html
+/doc/index.html
+```
 ## Settings
 Edit in file .env:
 - API URL:
@@ -52,8 +58,4 @@ php artisan key:generate
 ```
 ```$xslt
 php artisan migrate
-```
-## API DOC
-```$xslt
-/doc/index.html
 ```

@@ -6,6 +6,7 @@ use App\Jobs\SendReportsJob;
 use App\Jobs\UpdateUsers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Time;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
+        $time_report = Time::find(1);
+        $schedule->call(function(){dispatch(new SendReportsJob());})->cron("0 $time_report->hour * * $time_report->week" );
+        $schedule->call(function(){dispatch(new UpdateUsers());})->weekly()->fridays();
     }
 
     /**

@@ -162,7 +162,7 @@ class ManagerController extends Controller
     {
         try{
             if(isset($request['available_users'])){
-                Selected::wnereIn('user_id', $request['available_users'])->delete();
+                Selected::whereIn('user_id', $request['available_users'])->delete();
             }
 
             if(isset($request['managers'])){

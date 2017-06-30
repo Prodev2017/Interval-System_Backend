@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendReportsAdminJob;
 use App\Mail\SendReportsAdmin;
+use App\Time;
 use App\Week;
 use Dompdf\Exception;
 use Illuminate\Http\Request;
@@ -277,6 +278,75 @@ class ReportController extends Controller
             }
 
             return ['status'=>true];
+        }catch (Exception $e){
+            abort(400);
+        }
+    }
+
+    /**
+     * @api {get} /api/timereport Get Time of reporting
+     * @apiName Time of reporting
+     * @apiGroup Report
+     *
+     * @apiDescription Get time of reporting
+     *
+     * @apiSuccess {integer}   week                 Week number.
+     * @apiSuccess {integer}   hour                 Hour of the day.
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *      {
+     *          "week":6,
+     *          "hour":22
+     *      }
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     */
+    public function getTimeReport(){
+        try{
+            return Time::find(1);
+        }catch (Exception $e){
+            abort(400);
+        }
+    }
+
+    /**
+     * @api {post} /api/timereport Set Time of reporting
+     * @apiName Set Time of reporting
+     * @apiGroup Report
+     *
+     * @apiDescription Set time of reporting
+     *
+     * @apiParam {integer}   week                 Week number.
+     * @apiParam {integer}   hour                 Hour of the day.
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "status":true
+     *     }
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     */
+    public function setTimeReport(Request $request){
+        try{
+            if(isset($request['week']) && isset($request['hour'])){
+                $time = Time::find(1);
+
+                $time->week = $request['week'];
+                $time->hour = $request['hour'];
+
+                $time->save();
+
+                return ['status'=>true];
+            } else
+            {
+                return ['status'=>false];
+            }
         }catch (Exception $e){
             abort(400);
         }
