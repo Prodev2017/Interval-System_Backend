@@ -271,6 +271,7 @@ a.text-blue-grey:hover {
 */
 .btn {
   position: relative;
+  margin-top: 23px;
   left: 50px;
   outline: 0 !important;
   box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.26);
