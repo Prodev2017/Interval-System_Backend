@@ -6,3 +6,7 @@ a.btn.disabled {
   color: gray;
   cursor: not-allowed;
 }
+
+a.btn.btn-default {
+  float: right;
+}

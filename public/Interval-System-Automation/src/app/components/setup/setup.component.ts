@@ -16,6 +16,7 @@ export class SetupComponent implements OnInit {
   private unSelectedUsers: any[];
 
   private DayOfWeek: number;
+  private previousDayTime: number = 0;
   private DayTime: number;
 
   constructor(private userService: UserService,
@@ -40,6 +41,7 @@ export class SetupComponent implements OnInit {
       .then(result => {
         this.DayOfWeek = result.week;
         this.DayTime = result.hour;
+        this.previousDayTime = result.hour;
       });
   }
 
@@ -56,6 +58,7 @@ export class SetupComponent implements OnInit {
 
     this.selectedUsers = [];
     this.unSelectedUsers = [];
+    this.Submit();
   }
 
   unSelectUsers() {
@@ -69,6 +72,7 @@ export class SetupComponent implements OnInit {
 
     this.selectedUsers = [];
     this.unSelectedUsers = [];
+    this.Submit();
   }
 
   sortUserArray(first, second) {
@@ -105,4 +109,11 @@ export class SetupComponent implements OnInit {
     this.reportService.setUpdateTime(this.DayOfWeek, this.DayTime);
   }
 
+  dayTimeChange() {
+    if(this.DayTime < 24 && this.DayTime >= 0) {
+      this.previousDayTime = this.DayTime;
+    } else {
+      this.DayTime = this.previousDayTime;
+    }
+  }
 }

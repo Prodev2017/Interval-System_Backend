@@ -1,27 +1,36 @@
 <div class="tab-pane" id="tab4_3">
-  <h1>Schedule reports</h1>
-  <form>
-    <label>
-      Time (0-23):
-      <input [(ngModel)]="DayTime" type="number" step="1" min="0" max="23" name="DayTime">
-    </label>
-    <label>
-      Day of week:
-      <select [(ngModel)]="DayOfWeek" name="DayOfWeek">
-        <option value="0">Monday</option>
-        <option value="1">Tuesday</option>
-        <option value="2">Wednesday</option>
-        <option value="3">Thursday</option>
-        <option value="4">Friday</option>
-        <option value="5">Saturday</option>
-        <option value="6">Sunday</option>
-      </select>
-    </label>
-    <a class="btn btn-default" (click)="UpdateTime()">Schedule</a>
-    <a class="btn btn-default" (click)="UpdateUsers()">Update users now</a>
-  </form>
-  <br><br>
 
+  <h2>Schedule reports</h2>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <label>
+        Time (0-23):
+        <input [(ngModel)]="DayTime" (keyup)="dayTimeChange($event)" type="number" step="1" min="0" max="23" name="DayTime">
+      </label>
+
+      <label>
+        Day of week:
+        <select [(ngModel)]="DayOfWeek" name="DayOfWeek">
+          <option value="0">Monday</option>
+          <option value="1">Tuesday</option>
+          <option value="2">Wednesday</option>
+          <option value="3">Thursday</option>
+          <option value="4">Friday</option>
+          <option value="5">Saturday</option>
+          <option value="6">Sunday</option>
+        </select>
+      </label>
+    </div>
+
+    <!--<div class="col-md-4">-->
+
+    <!--</div>-->
+    <!--<a class="btn btn-default" (click)="UpdateUsers()">Update users now</a>-->
+    <a class="btn btn-default" (click)="UpdateTime()">Schedule</a>
+  </div>
+
+  <br><br>
+  <h2>Users setup</h2>
 
     <div class="col-md-12">
       <div class="col-md-4">
@@ -67,7 +76,7 @@
       </div>
     </div>
 
-    <a class="btn btn-default btn-ripple" (click)="Submit()">Save</a>
+    <!--<a class="btn btn-default btn-ripple" (click)="Submit()">Save</a>-->
     <br><br>
 
 </div>

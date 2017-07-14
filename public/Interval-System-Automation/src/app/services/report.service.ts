@@ -50,12 +50,24 @@ export class ReportService {
       });
   }
 
+  private dayOfWeek = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+  ];
+
   setUpdateTime(week, hour) {
     this.heleperService.startLoading();
     return this.http.post('/api/timereport', {week, hour})
       .toPromise()
       .then(response => {
-        this.heleperService.endLoading('New time was set', 'success');
+        this.heleperService.endLoading(`Reports are now scheduled to run at ${hour} 
+                                        o'clock on every ${this.dayOfWeek[week]}`, 'success');
+
         return response.json();
       }).catch(err => {
         console.log('ERROR', err);

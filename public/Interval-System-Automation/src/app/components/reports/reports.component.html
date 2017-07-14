@@ -1,14 +1,24 @@
 <div class="col-md-12" id="tab4_2">
-  <div class="col-md-6" >
-    <label>
-      Select a week to send approvals
+
+  <h2>Reporting</h2>
+
+  <div class="col-md-12">
+    <label>Select a week to send approvals</label>
+  </div>
+
+  <div class="col-md-12">
+
+    <div class="col-md-4">
       <my-date-picker (dateChanged)="onDateChanged($event)" (calendarViewChanged)="onCalendarViewChanged($event)" [selDate]="pickedDate" [options]="myDatePickerOptions"></my-date-picker>
-    </label>
-  </div>
-  <div class="col-md-6">
+    </div>
+
+    <div class="col-md-4">
       <a class="btn btn-default" (click)="SendReminders()"><span class="ion-android-settings"></span> Send Approval Reports</a>
+    </div>
   </div>
-  
+
+  <br><br>
+
   <div class="panel col-md-12" [style.visibility]="!(projects && projects.userCount > 0)? 'hidden' : 'visible'">
     <div class="panel-body">
       <ul class="list-material" *ngIf="projects && projects.userCount > 0">
@@ -30,5 +40,11 @@
         </li>
       </ul>
     </div>
+
+    <div class="col-md-4">
+      <a class="btn btn-default" (click)="SendReminders()"><span class="ion-android-settings"></span> Send Approval Reports</a>
+    </div>
+    <br><br>
+
   </div>
 </div>
