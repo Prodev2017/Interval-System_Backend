@@ -51,11 +51,18 @@ class SendReportsJob implements ShouldQueue
                 foreach ($timereports as $key=>$timereport){
                     $approval = new Approval();
 
+                    $timings = $timereport['data'];
+                    $user_time = 0;
+                    foreach ($timings as $timing){
+                        $user_time += $timing['time'];
+                    }
+
                     $approval->manager_id = $manager->interval_id;
                     $approval->user_id = $timereport['user_id'];
                     $approval->week_id = $week->id;
                     $approval->client_id = $timereport['client_id'];
                     $approval->status = false;
+                    $approval->time = $user_time;
 
                     $approval->save();
                     $timereports[$key]['approval_id'] =$approval->id;

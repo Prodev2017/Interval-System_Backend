@@ -1,6 +1,68 @@
 [
   {
     "type": "get",
+    "url": "/api/approveall",
+    "title": "Approval all reports",
+    "name": "ApproveReportAllUsers",
+    "group": "Report",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "week_id",
+            "description": "<p>week id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "manager_id",
+            "description": "<p>Interval managet id.</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>A pproval all users report for the week. For approval from a letter or PDF report. Successful request - closes the tab. Error - &quot;TimeSheets not found&quot;.</p>",
+    "version": "0.0.0",
+    "filename": "./app/Http/Controllers/ReportController.php",
+    "groupTitle": "Report"
+  },
+  {
+    "type": "get",
+    "url": "/api/approve",
+    "title": "Approval report",
+    "name": "ApproveReportUser",
+    "group": "Report",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "approvals_id",
+            "description": "<p>approval id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "manager_id",
+            "description": "<p>Interval managet id.</p>"
+          }
+        ]
+      }
+    },
+    "description": "<p>User report approval for the week. For approval from a letter or PDF report. Successful request - closes the tab. Error - &quot;TimeSheets not found&quot;.</p>",
+    "version": "0.0.0",
+    "filename": "./app/Http/Controllers/ReportController.php",
+    "groupTitle": "Report"
+  },
+  {
+    "type": "get",
     "url": "/api/pdfview",
     "title": "Download PDF report",
     "name": "GetPDFReport",

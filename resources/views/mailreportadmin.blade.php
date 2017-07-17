@@ -49,25 +49,33 @@
             <h2><b>Attached are summaries of your timesheets</b></h2>
         </div>
         <div>
-            Please review the submitted timesheets
+            The following time sheet(s) were approved by {{$items->manager}}:
         </div>
         <br>
-        <h2>TimeSheets of Manager: {{$items->manager}}</h2>
+        TimeSheets<br>
         From {{$items->datafrom}} through {{$items->through}}
     </div>
 
     <table>
         <tr class="head">
-            <td class="td_1">User</td>
-            <td class="td_2">Status</td>
+            <td class="td_1">Employee</td>
+            <td class="td_2">Time Sheet Date</td>
+            <td class="td_2">Hours</td>
+            <td class="td_2">Approved</td>
         </tr>
         @foreach($items->users as $user)
             <tr>
                 <td class="td_1">
-                    <b>{{ucwords($user)}}</b>
+                    <b>{{ucwords($user['name'])}}</b>
                 </td>
                 <td class="td_2 center">
-                    Confirmed
+                    {{$items->datafrom}}
+                </td>
+                <td class="td_2 center">
+                    {{number_format($user['hours'],3)}}
+                </td>
+                <td class="td_2 center">
+                    {{$user['approved']}}
                 </td>
             </tr>
         @endforeach

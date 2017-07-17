@@ -59,3 +59,6 @@ php artisan key:generate
 ```$xslt
 php artisan migrate
 ```
+```angular2html
+composer require guzzlehttp/guzzle
+```

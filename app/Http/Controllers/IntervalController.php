@@ -139,6 +139,18 @@ class IntervalController extends Controller
         return isset($response->personcontact['0']->value)?$response->personcontact['0']->value:'';
     }
 
+    public function getGroup()
+    {
+        $urlRequest='/group/';
+
+        $response = $this->requestInterval($urlRequest, $this->adminData);
+
+        if($response->code > 230){
+            return '';
+        }
+        dd($response);
+    }
+
     /**
      * @param $dateBegin
      * @param $dateEnd

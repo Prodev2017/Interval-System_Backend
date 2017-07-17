@@ -102,7 +102,11 @@ class ReportController extends Controller
      */
     public function timeDataManagers($startdate = null, $enddate = null){
         $data = $out = $this->timeData($startdate, $enddate);
-        $managers = User::where('interval_group','Manager')->orWhere('interval_groupid', 3)->get();
+        $managers = User::where('interval_group','Manager')
+            ->orWhere('interval_groupid', 3)
+            ->orWhere('interval_group','Administrator')
+            ->orWhere('interval_groupid', 2)
+            ->get();
 
         foreach ($managers as $key=>$manager){
             $users = $manager->selected;
@@ -130,6 +134,122 @@ class ReportController extends Controller
         $managers_data = $this->timeDataManagers( $startdate, $enddate);
 
         return $managers_data->where('interval_id', $manager_id)->first();
+    }
+
+    /**
+     * @api {get} /api/approve Approval report
+     * @apiName ApproveReportUser
+     * @apiGroup Report
+     *
+     * @apiParam {Number} approvals_id approval id.
+     * @apiParam {Number} manager_id Interval managet id.
+     *
+     * @apiDescription User report approval for the week. For approval from a letter or PDF report. Successful request - closes the tab. Error - "TimeSheets not found".
+     */
+    public function approve(Request $request)
+    {
+        try{
+            $approve =Approval::where('id', $request['approvals_id'])
+                ->where('manager_id', $request['manager_id']);
+
+            $approve->update(['status' => true]);
+
+            $approve_data = $approve->first();
+
+            if(count($approve_data)){
+                $user = User::where('interval_id',$approve_data->user_id)->first();
+                $manager = User::where('interval_id',$approve_data->manager_id)->first();
+                $week = Week::find($approve_data->week_id);
+
+                $out=collect();
+                $out->manager = $manager->firstname.' '.$manager->lastname;
+                $out->users = [
+                    ['name' => $user->firstname.' '.$user->lastname,
+                    'hours' => $approve_data->time,
+                    'approved' => $approve_data->updated_at]
+                ];
+                $out->datafrom = $week->week_date_start;
+                $out->through = $week->week_date_end;
+
+                $this->sendReportAdmin($out);
+            } else{
+                return "TimeSheets not found";
+            }
+
+            return '<script>window.close();</script>';
+        } catch (Exception $exception){
+            return "TimeSheets not found";
+        }
+
+    }
+
+    /**
+     * @api {get} /api/approveall Approval all reports
+     *
+     * @apiName ApproveReportAllUsers
+     * @apiGroup Report
+     *
+     * @apiParam {Number} week_id week id.
+     * @apiParam {Number} manager_id Interval managet id.
+     *
+     * @apiDescription A pproval all users report for the week. For approval from a letter or PDF report. Successful request - closes the tab. Error - "TimeSheets not found".
+     */
+    public function approveAll(Request $request)
+    {
+        try{
+            $approve =Approval::where('manager_id', $request['manager_id'])
+                ->where('week_id',$request['week_id']);
+
+            $approve->update(['status' => true]);
+
+            $users_id = $approve->pluck('user_id')
+                ->toArray();
+            $manager_id=$approve->pluck('manager_id')->first();
+
+            $approve_data = $approve->first();
+
+            if(count($approve_data)){
+                $manager = User::where('interval_id',$manager_id)->first();
+                $users = User::whereIn('interval_id',$users_id)->get();
+                $week = Week::find($approve_data->week_id);
+
+                $users_data =[];
+                foreach ($users as $user){
+                    $appr_data_user = $approve->where('user_id',$user->id)->first();
+                    $users_data[]['name'] = $user->firstname.' '.$user->lastname;
+                    $users_data[]['hours'] = $appr_data_user->time;
+                    $users_data[]['approved'] = $appr_data_user->updated_at;
+                }
+
+                $out=collect();
+                $out->manager = $manager->firstname.' '.$manager->lastname;
+                $out->users = $users_data;
+                $out->datafrom = $week->week_date_start;
+                $out->through = $week->week_date_end;
+
+                $this->sendReportAdmin($out);
+            }else{
+                return "TimeSheets not found";
+            }
+
+            return '<script>window.close();</script>';
+        }catch (Exception $e){
+            return "TimeSheets not found";
+        }
+    }
+
+    /**
+     * @param $data
+     */
+    private function sendReportAdmin($data){
+        $admins = User::where('interval_groupid', '2')
+            ->orWhere('interval_group','Administrator')
+            ->pluck('email')
+            ->toArray();
+
+        $data->email = $admins;
+
+        Mail::send(new SendReportsAdmin($data));
     }
 
     /**

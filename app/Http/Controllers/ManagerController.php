@@ -80,6 +80,8 @@ class ManagerController extends Controller
         try{
             $managers = User::where('interval_group','Manager')
                 ->orWhere('interval_groupid',3)
+                ->orWhere('interval_group','Administrator')
+                ->orWhere('interval_groupid',2)
                 ->select('interval_id', 'firstname', 'lastname')
                 ->get();
 
