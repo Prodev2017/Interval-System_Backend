@@ -51,13 +51,13 @@ export class ReportService {
   }
 
   private dayOfWeek = [
+      'Sunday',
       'Monday',
       'Tuesday',
       'Wednesday',
       'Thursday',
       'Friday',
-      'Saturday',
-      'Sunday'
+      'Saturday'
   ];
 
   setUpdateTime(week, hour) {
