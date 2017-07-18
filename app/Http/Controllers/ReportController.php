@@ -215,10 +215,11 @@ class ReportController extends Controller
 
                 $users_data =[];
                 foreach ($users as $user){
-                    $appr_data_user = $approve->where('user_id',$user->id)->first();
-                    $users_data[]['name'] = $user->firstname.' '.$user->lastname;
-                    $users_data[]['hours'] = $appr_data_user->time;
-                    $users_data[]['approved'] = $appr_data_user->updated_at;
+                    $date_app = Approval::where('manager_id', $request['manager_id'])
+                        ->where('week_id',$request['week_id'])->where('user_id',$user->interval_id)->first();
+                    $users_data[] = ['name' => $user->firstname.' '.$user->lastname,
+                                     'hours'=> $date_app->time,
+                                     'approved'=> $date_app->updated_at];
                 }
 
                 $out=collect();

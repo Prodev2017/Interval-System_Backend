@@ -1,5 +1,9 @@
 <?php
 
+Route::get('/api/pdfview',array('as'=>'pdfview','uses'=>'ReportController@pdfview'));
+Route::get('/api/approveall',array('as'=>'approveall','uses'=>'ReportController@approveAll'));
+Route::get('/api/approve', array('as'=>'approve','uses'=>'ReportController@approve'));
+
 Route::middleware(['cors'])->group(function() {
 
     //Api routs. GET
@@ -7,9 +11,7 @@ Route::middleware(['cors'])->group(function() {
         return view('welcome');
     }); //TODO: this route should get laravel session and csrf token without welcome page
 
-    Route::get('/api/pdfview',array('as'=>'pdfview','uses'=>'ReportController@pdfview'));
-    Route::get('/api/approveall',array('as'=>'approveall','uses'=>'ReportController@approveAll'));
-    Route::get('/api/approve', array('as'=>'approve','uses'=>'ReportController@approve'));
+
     Route::get('/api/timereport', 'ReportController@getTimeReport');
 
     //Api routs. POST
