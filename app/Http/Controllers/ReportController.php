@@ -391,13 +391,10 @@ class ReportController extends Controller
      * @apiErrorExample Error-Response:
      *     HTTP/1.1 400 Bad Request
      */
-    public function sendReminders(Request $request)
+    public function sendReminders()
     {
         try{
-            if(isset($request['approval_id'])) {
-                dispatch(new SendReportsAdminJob($request['approval_id']));
-            }
-
+            dispatch(new SendReportsAdminJob());
             return ['status'=>true];
         }catch (Exception $e){
             abort(400);

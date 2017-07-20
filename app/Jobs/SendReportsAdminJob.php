@@ -36,7 +36,6 @@ class SendReportsAdminJob implements ShouldQueue
     public function handle()
     {
         $approvals = Approval::LeftJoin('weeks', 'approvals.week_id', '=', 'weeks.id')
-            ->whereIn('approvals.id', $this->approval_id)
             ->where('approvals.status', false)
             ->select('approvals.week_id', 'weeks.week_date_start', 'weeks.week_date_end', 'approvals.manager_id', 'approvals.user_id', 'approvals.id as approval_id')
             ->get();
@@ -65,7 +64,6 @@ class SendReportsAdminJob implements ShouldQueue
                     $approv = Approval::where('week_id', $week_id)
                         ->where('manager_id', $manager_id)
                         ->where('user_id', $timereport['user_id'])
-                        ->whereIn('id', $this->approval_id)
                         ->first();
 
                     if (count($approv)) {
@@ -81,5 +79,6 @@ class SendReportsAdminJob implements ShouldQueue
                 Mail::send(new SendReports($reports));
             }
         }
+//        return true;
     }
 }
