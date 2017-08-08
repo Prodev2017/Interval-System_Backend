@@ -1,0 +1,49 @@
+<div class="content">
+	<div class="page-header full-content">
+		<div class="row">
+			<div class="col-md-12">
+            <img class="logo" src="../assets/image/interval.jpg">
+            <h1>FINANCIAL RISK GROUP – Intervals Reporting</h1>
+
+        <ul class="nav navbar-nav navbar-right">
+          <li><a [routerLink]="['/']">Home</a></li>
+          <li><a [routerLink]="['/reports']">Reporting</a></li>
+          <li><a [routerLink]="['/setup']">Admin</a></li>
+        </ul>
+
+      </div>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel_boder">
+				<!--<div class="panel-heading">-->
+					<!--<div class="panel-title"><h4>FRG Time Reporting System</h4></div>-->
+				<!--</div>-->
+				<!--<app-navigation></app-navigation>-->
+				<div class="container">
+          <router-outlet></router-outlet>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="cssload-triangles" *ngIf="helperService.load">
+  <div class="cssload-tri cssload-invert"></div>
+  <div class="cssload-tri cssload-invert"></div>
+  <div class="cssload-tri"></div>
+  <div class="cssload-tri cssload-invert"></div>
+  <div class="cssload-tri cssload-invert"></div>
+  <div class="cssload-tri"></div>
+  <div class="cssload-tri cssload-invert"></div>
+  <div class="cssload-tri"></div>
+  <div class="cssload-tri cssload-invert"></div>
+</div>
+
+<div class="popup-container">
+  <div *ngFor="let message of Messages" class="popup" [ngClass]="(message.messageStatus == 'error') ? 'error' : 'success'">
+    <p>{{ message.Message }}</p>
+  </div>
+</div>
