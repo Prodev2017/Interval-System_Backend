@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Exception;
 use Illuminate\Support\Collection;
 
 class IntervalController extends Controller
@@ -22,25 +23,30 @@ class IntervalController extends Controller
     {
         $credentials = $userData['interval_token'].':'.$userData['password'];
         $url = $this->baseUrl.$urlRequest;
-
         $headers = array(
             "GET HTTP/1.0",
             "Content-type:  application/json;charset=\"utf-8\"",
             "Accept:  application/json",
             "Authorization: Basic " . base64_encode($credentials)
         );
+        try {
 
-        $ch = curl_init();
+            $ch = curl_init();
+            if (FALSE === $ch)
+                throw new Exception('failed to initialize');
+            curl_setopt($ch, CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $jsonResponse = curl_exec($ch);
 
-        $jsonResponse = curl_exec($ch);
-
-        $response = json_decode($jsonResponse);
-
-        return $response;
+            if (FALSE === $jsonResponse )
+                throw new Exception(curl_error($ch), curl_errno($ch));
+            $response = json_decode($jsonResponse);
+            return $response;
+        }catch(Exception $e){
+            print_r($e->getMessage());die;
+        }
     }
 
     /**

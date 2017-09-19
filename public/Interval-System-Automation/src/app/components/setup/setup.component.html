@@ -2,14 +2,15 @@
 
   <h2>Schedule reports</h2>
   <div class="col-md-12">
-    <div class="col-md-6">
-      <label>
-        Time (0-23):
-        <input [(ngModel)]="DayTime" (keyup)="dayTimeChange($event)" type="number" step="1" min="0" max="23" name="DayTime">
+    <div class="col-md-12">
+      <label class="col-xs-5">
+        <span class="content_label col-xs-4">Time (0-23):</span>
+        <input [(ngModel)]="DayTime" (keyup)="dayTimeChange($event)" type="number" step="1" min="0" max="23" name="DayTime" class="col-xs-6">
       </label>
-
-      <label>
-        Day of week:
+    </div>
+    <div class="col-md-12">
+    <label class="col-xs-5">
+      <span class="content_label col-xs-4">Day of week:</span>
         <select [(ngModel)]="DayOfWeek" name="DayOfWeek">
           <option value="1">Monday</option>
           <option value="2">Tuesday</option>
@@ -36,7 +37,7 @@
       <div class="col-md-4">
 
         <label for="managers">
-          Managers
+          Team Leads
         </label>
 
         <select id="managers" class="selectize-header" [(ngModel)]="selectedManager">
@@ -46,7 +47,7 @@
       </div>
       <div class="col-md-3">
         <div class="panel-body">
-          <div class="col-md-9">Selected Users</div>
+          <div class="col-md-9">Team Members</div>
 
             <select *ngIf="selectedManager" data-placeholder="Choose a Country" class="chosen-select" multiple [(ngModel)]="unSelectedUsers">
               <option *ngFor="let user of selectedManager.users" [ngValue]="user"> {{ user.firstname }} {{ user.lastname }}</option>

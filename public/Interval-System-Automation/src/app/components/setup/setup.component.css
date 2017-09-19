@@ -10,3 +10,7 @@ a.btn.disabled {
 a.btn.btn-default {
   float: right;
 }
+
+.content_label {
+  float: left;
+}
