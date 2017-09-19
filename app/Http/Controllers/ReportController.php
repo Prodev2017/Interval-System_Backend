@@ -76,9 +76,10 @@ class ReportController extends Controller
         $alltimes = $interval->getTime($startdate, $enddate);
         $client = collect($interval->getClient());
         $timeform = [];
-
         foreach ($alltimes as $key=>$alltime)
         {
+            if(is_array($alltime)){
+
                 $clientlocalid = $client->where('interval_id', $alltime['clientid'])->first();
                 $alltime['clientlocalid'] = $clientlocalid['interval_localid'];
 
@@ -86,6 +87,7 @@ class ReportController extends Controller
                 $timeform[$alltime['personid']]['user_id'] =$alltime['personid'];
                 $timeform[$alltime['personid']]['client_id'] =$alltime['clientid'];
                 $timeform[$alltime['personid']]['data'][] =$alltime;
+            }
         }
 
         $out['data']=$timeform;
@@ -107,7 +109,6 @@ class ReportController extends Controller
             ->orWhere('interval_group','Administrator')
             ->orWhere('interval_groupid', 2)
             ->get();
-
         foreach ($managers as $key=>$manager){
             $users = $manager->selected;
             $timereport = [];
@@ -120,7 +121,6 @@ class ReportController extends Controller
 
             $managers[$key]->timereport =$timereport;
         }
-
         return $managers;
     }
 

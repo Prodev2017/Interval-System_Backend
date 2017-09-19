@@ -41,11 +41,9 @@ class SendReportsAdminJob implements ShouldQueue
             ->get();
 
         $approval_unique = $approvals->unique('week_date_end', 'week_date_start');
-
         $reportConrtr = new ReportController();
         foreach ($approval_unique as $item) {
             $timeDataManagers = $reportConrtr->timeDataManagers($item->week_date_start, $item->week_date_end);
-
             $managers_id = $approvals->where('week_date_end', $item->week_date_end)
                 ->where('week_date_start', $item->week_date_start)
                 ->pluck('manager_id')
@@ -55,15 +53,17 @@ class SendReportsAdminJob implements ShouldQueue
                 ->where('week_date_start', $item->week_date_start)
                 ->pluck('week_id')
                 ->first();
-
+            $data_response = array();
             foreach ($managers_id as $manager_id) {
                 $reports = $timeDataManagers->where('interval_id', $manager_id)->first();
+
                 $timereports = $reports->timereport;
 
                 foreach ($timereports as $key => $timereport) {
                     $approv = Approval::where('week_id', $week_id)
                         ->where('manager_id', $manager_id)
                         ->where('user_id', $timereport['user_id'])
+                        ->whereNotIn('id',$data_response)
                         ->first();
 
                     if (count($approv)) {
@@ -72,10 +72,9 @@ class SendReportsAdminJob implements ShouldQueue
                         unset($timereports[$key]);
                     }
                 }
-
                 $reports->timereport = $timereports;
                 $reports['week_id'] = $week_id;
-
+                $data_response[] = $reports->id;
                 Mail::send(new SendReports($reports));
             }
         }
