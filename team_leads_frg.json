@@ -26,14 +26,5 @@
 		"interval_groupid": "4",
 		"interval_active": true,
 		"interval_group": "Resource"
-	},{
-		"interval_id": "252972",
-		"interval_localid": "75",
-		"interval_firstname": "valerie",
-		"interval_username": "valerie cooper",
-		"interval_lastname": "cooper",
-		"interval_groupid": "3",
-		"interval_active": true,
-		"interval_group": "Manager"
 	}
 ]
