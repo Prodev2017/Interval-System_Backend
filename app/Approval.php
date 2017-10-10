@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Approval
+ * @property $time
+ * @package App
+ */
 class Approval extends Model
 {
     public function weeks(){

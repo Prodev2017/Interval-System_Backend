@@ -1,0 +1,39 @@
+[
+	{
+		"interval_id": "7958",
+		"interval_localid": "1",
+		"interval_firstname": "John",
+		"interval_username": "jcbell",
+		"interval_lastname": "Bell",
+		"interval_groupid": "2",
+		"interval_active": true,
+		"interval_group": "Administrator"
+	},{
+		"interval_id": "16064",
+		"interval_localid": "19",
+		"interval_firstname": "Chuck",
+		"interval_username": "chuck beck",
+		"interval_lastname": "Beck",
+		"interval_groupid": "3",
+		"interval_active": true,
+		"interval_group": "Manager"
+	},{
+		"interval_id": "26838",
+		"interval_localid": "22",
+		"interval_firstname": "Rory",
+		"interval_username": "rcullen",
+		"interval_lastname": "Cullen",
+		"interval_groupid": "4",
+		"interval_active": true,
+		"interval_group": "Resource"
+	},{
+		"interval_id": "252972",
+		"interval_localid": "75",
+		"interval_firstname": "valerie",
+		"interval_username": "valerie cooper",
+		"interval_lastname": "cooper",
+		"interval_groupid": "3",
+		"interval_active": true,
+		"interval_group": "Manager"
+	}
+]

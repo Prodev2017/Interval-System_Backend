@@ -93,6 +93,12 @@
         <div>
             Click the <button disabled>Approve</button> button to approve a timesheet or the <button disabled>Approve All</button> to approve everyone
         </div>
+        @if(isset($items->notReportedUsers) && !empty($items->notReportedUsers))
+            <h2>No reported time:</h2>
+            @foreach($items->notReportedUsers as $user)
+                <p>{{ $user['username'] }}</p>
+            @endforeach
+        @endif
         <h2>TimeSheets:</h2>
     </div>
 

@@ -30,7 +30,6 @@ class IntervalController extends Controller
             "Authorization: Basic " . base64_encode($credentials)
         );
         try {
-
             $ch = curl_init();
             if (FALSE === $ch)
                 throw new Exception('failed to initialize');

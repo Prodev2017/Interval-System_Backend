@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendReportsAdminJob;
 use App\Mail\SendReportsAdmin;
+use App\TeamLeadsHelper;
 use App\Time;
 use App\Week;
 use Dompdf\Exception;
@@ -104,11 +105,9 @@ class ReportController extends Controller
      */
     public function timeDataManagers($startdate = null, $enddate = null){
         $data = $out = $this->timeData($startdate, $enddate);
-        $managers = User::where('interval_group','Manager')
-            ->orWhere('interval_groupid', 3)
-            ->orWhere('interval_group','Administrator')
-            ->orWhere('interval_groupid', 2)
-            ->get();
+
+        $managers = TeamLeadsHelper::getTeamLeadsList();
+
         foreach ($managers as $key=>$manager){
             $users = $manager->selected;
             $timereport = [];

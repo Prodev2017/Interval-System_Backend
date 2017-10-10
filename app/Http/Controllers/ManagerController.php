@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Selected;
+use App\TeamLeadsHelper;
 use App\User;
 use Dompdf\Exception;
 use Illuminate\Http\Request;
@@ -78,12 +79,7 @@ class ManagerController extends Controller
      */
     public function getSelectedUsers(){
         try{
-            $managers = User::where('interval_group','Manager')
-                ->orWhere('interval_groupid',3)
-                ->orWhere('interval_group','Administrator')
-                ->orWhere('interval_groupid',2)
-                ->select('interval_id', 'firstname', 'lastname')
-                ->get();
+            $managers = TeamLeadsHelper::getTeamLeadsList();
 
             $selecteds = Selected::leftJoin('users', 'selecteds.user_id','=','users.interval_id')
                 ->where('users.interval_group','=','Resource')
